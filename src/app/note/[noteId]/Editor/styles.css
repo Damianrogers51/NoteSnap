@@ -1,0 +1,24 @@
+.bn-container {
+  --bn-colors-editor-text: #ffffff;
+  --bn-colors-editor-background: #9b0000;
+  --bn-colors-side-menu: #ffffff;
+  
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: -0.025em;
+}
+
+.bn-container .bn-editor {
+  padding-top: 24px;
+  padding-bottom: 24px;
+
+  border: 1px solid red;
+}
+
+.bn-block {
+  padding-inline: 12px;
+}
+
+.bn-block-content {
+  padding-inline: 12px;
+  border: 1px solid red;
+}
