@@ -1,7 +1,9 @@
 import Companion from "./Companion";
 
-export default function CompanionPage({ params }: { params: { noteId: string } }) {
+export default async function CompanionPage({ params }: { params: Promise<{ noteId: string }> }) {
+  const { noteId } = await params;
+
   return (
-    <Companion id={params.noteId} />
+    <Companion id={noteId} />
   );
 }

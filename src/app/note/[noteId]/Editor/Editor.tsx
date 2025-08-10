@@ -1,8 +1,8 @@
 "use client";
 
-import { BlockNoteView, Theme } from "@blocknote/mantine";
-import { useCreateBlockNote } from "@blocknote/react";
 import { useEffect } from "react";
+import { BlockNoteView } from "@blocknote/mantine";
+import { useCreateBlockNote } from "@blocknote/react";
 
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css"
@@ -18,12 +18,9 @@ export default function Editor({ image }: EditorProps) {
 
   useEffect(() => {
     if (image && editor) {
-      // Convert blob to data URL
       const reader = new FileReader();
       reader.onload = (e) => {
         const dataUrl = e.target?.result as string;
-        
-        // Insert image block at current cursor position
         editor.insertBlocks(
           [
             {

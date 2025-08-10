@@ -1,7 +1,9 @@
 import Note from "./Note";
 
-export default function NotePage({ params }: { params: { noteId: string } }) {
+export default async function NotePage({ params }: { params: Promise<{ noteId: string }> }) {
+  const { noteId } = await params;
+
   return (
-    <Note id={params.noteId} />
+    <Note id={noteId} />
   );
 }

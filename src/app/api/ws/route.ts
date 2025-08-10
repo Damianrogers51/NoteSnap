@@ -3,7 +3,6 @@ const rooms = new Map<string, Set<import('ws').WebSocket>>();
 export function SOCKET(
   client: import('ws').WebSocket,
   request: import('node:http').IncomingMessage,
-  _server: import('ws').WebSocketServer,
 ) {
   const url = new URL(request.url!, `http://${request.headers.host}`);
   const noteId = url.searchParams.get('noteId');
