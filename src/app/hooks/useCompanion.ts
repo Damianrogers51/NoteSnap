@@ -1,29 +1,31 @@
 'use client';
 
-import { useState, useEffect, useCallback } from "react";
-import { useSocket } from "./useSocket";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { io, Socket } from "socket.io-client";
 
-export function useCompanion(url: () => string) {
-  const socket = useSocket(url);
+export function useCompanion(noteId: string) {
+  const socket = useRef<Socket>(null)
 
-  const [mostRecentImage, setMostRecentImage] = useState<Blob | null>(null);
+  const [image, setImage] = useState<Blob>();
 
   useEffect(() => {
-    const controller = new AbortController();
-    socket?.addEventListener('message', (event) => {
-      setMostRecentImage(event.data);
+    if (socket.current) return;
+    socket.current = io(process.env.NEXT_PUBLIC_WS_URL!, {
+      extraHeaders: {
+        'note-id': noteId,
+      },
     });
+    socket.current.on('image', setImage);
 
-    return () => controller.abort()
-  }, [socket])
+    return () => {
+      socket.current?.disconnect();
+    };
+  }, [noteId])
 
   const sendImage = useCallback(
-    (image: Blob) => {
-      if (!socket || socket.readyState !== WebSocket.OPEN) return;
-      socket.send(image)
-    },
-    [socket]
+    (image: Blob) => socket.current?.emit('image', image),
+    []
   )
 
-  return [mostRecentImage, sendImage] as const
+  return [image, sendImage] as const
 }

@@ -1,0 +1,70 @@
+'use client'
+
+import Link from "next/link"
+import { Note } from "../../note/[noteId]/Note";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
+import { calculateTimeAgo } from "@/utils/math/time"
+import { useRouter } from "next/navigation"
+
+export default function NotePreview({ note, onDelete }: { note: Note, onDelete: (deletedNoteId: string) => void }) {
+  const router = useRouter()
+
+  function handleOpen() {
+    router.push(`/note/${note.id}`)
+  }
+
+  function handleOpenCompanionLink() {
+    router.push(`/companion/${note.id}`)
+  }
+
+  async function handleDelete() {
+    try {
+      const response = await fetch(`/api/notes/${note.id}`, {
+        method: 'DELETE',
+      })
+      if (!response.ok) {
+        throw new Error('Failed to delete note')
+      }
+      onDelete(note.id)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <Link key={note.id} href={`/note/${note.id}`} className="">
+          <div className="flex flex-col space-y-3" >
+            <div className="relative aspect-video bg-neutral-700 border-[.5px] border-neutral-600 rounded-xl overflow-hidden">
+              <div className="absolute top-2 right-2">
+                <div className="bg-neutral-800 text-neutral-400 rounded-md px-2 py-1">
+                  <div className="font-bold"> {note.id.slice(0, 8).toUpperCase()} </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col space-y-1 leading-tight">
+              <div className="text-xs font-semibold tracking-[-.5px]"> {note.title} </div>
+              <div className="opacity-60"> Edited {calculateTimeAgo(note.updated_at)} </div>
+            </div>
+          </div>
+        </Link>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem onClick={handleOpen}> Open </ContextMenuItem>
+        <ContextMenuItem onClick={handleOpenCompanionLink}> Open Companion Link </ContextMenuItem>
+
+        <ContextMenuSeparator />
+
+        <ContextMenuItem onClick={handleDelete}> Delete </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  )
+}
