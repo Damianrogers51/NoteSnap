@@ -1,5 +1,4 @@
-import { Suspense } from "react";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import Note from "./Note";
 
 export default async function NotePage({ params }: { params: Promise<{ noteId: string }> }) {
@@ -12,8 +11,8 @@ export default async function NotePage({ params }: { params: Promise<{ noteId: s
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <div className="flex justify-center w-screen min-h-screen px-8 pt-12">
       <Note note={note} />
-    </Suspense>
+    </div>
   );
 }

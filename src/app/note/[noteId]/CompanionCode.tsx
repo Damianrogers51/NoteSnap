@@ -4,14 +4,16 @@ import { useQRCode } from "next-qrcode";
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import Link from "next/link";
 
-export default function CompanionCode({ noteId }: { noteId: string }) {
+export default function CompanionCode({ displayId }: { displayId: string }) {
   const { SVG } = useQRCode();
   const QRCode = (
     <SVG
-      text={`${process.env.NEXT_PUBLIC_BASE_URL!}/companion/${noteId}`}
+      text={`${process.env.NEXT_PUBLIC_BASE_URL!}/companion/${displayId}`}
       options={{
         margin: 2,
         width: 300,
@@ -26,17 +28,19 @@ export default function CompanionCode({ noteId }: { noteId: string }) {
   return (
     <Dialog>
       <DialogTrigger>
-        <div className="flex items-center space-x-2">
-          <div className="text-neutral-300 text-3xl font-semibold hover:text-neutral-400 transition cursor-pointer">
-            {noteId.slice(0, 8).toUpperCase()}
+        <div className="flex items-center backdrop-blur-sm px-2 py-1 rounded-lg cursor-pointer">
+          <div className="text-neutral-300 text-3xl font-semibold hover:text-foreground transition cursor-pointer">
+            {displayId}
           </div>
         </div>
       </DialogTrigger>
       <DialogContent>
-        <div className="flex flex-col items-center justify-center py-4 space-y-8">
+        <DialogTitle className="sr-only"> Companion Code </DialogTitle>
+
+        <div className="max-w-xl flex flex-col items-center justify-center py-4 space-y-8">
           <div className="flex flex-col items-center space-y-2">
             <div className="bg-neutral-300 text-neutral-500 font-semibold rounded-lg px-2 py-1">
-              {noteId.slice(0, 8).toUpperCase()}
+              {displayId}
             </div>
 
             <div className="flex flex-col items-center space-y-1">
@@ -50,9 +54,9 @@ export default function CompanionCode({ noteId }: { noteId: string }) {
               {QRCode}
             </div>
 
-            <button className="w-full bg-foreground text-background font-semibold px-4 py-2 rounded-lg">
-              Copy Link
-            </button>
+            <Link href={`/companion/${displayId}`} className="w-full text-center bg-foreground text-background font-semibold px-4 py-2 rounded-lg hover:opacity-[.97] transition">
+              Open Companion Link
+            </Link>
           </div>
         </div>
       </DialogContent>

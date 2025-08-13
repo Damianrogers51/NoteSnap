@@ -1,4 +1,5 @@
-import { createClient } from "@/utils/supabase/server";
+import { Note } from "@/app/note/[noteId]/Note";
+import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -47,34 +48,38 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     if (!noteId) {
       return NextResponse.json({ error: 'Note ID is required' }, { status: 400 })
     }
-
-    const body = await request.json()
-    const updateData: any = {
-      id: noteId,
-      updated_at: new Date().toISOString()
+    
+    const body = await request.json() as { content?: unknown; title?: string }
+    const { content, title } = body
+    
+    const updateData: Partial<Note> = {
+      updated_at: new Date().toISOString(),
     }
-
-    if (body.content !== undefined) {
-      updateData.content = typeof body.content === 'string' ? body.content : JSON.stringify(body.content)
+    
+    if (content) {
+      updateData.content = typeof content === 'string' ? content : JSON.stringify(content)
     }
-    if (body.title !== undefined) {
-      updateData.title = body.title
+    
+    if (title) {
+      updateData.title = title
     }
 
     const supabase = await createClient()
     const { data, error } = await supabase
       .from('notes')
-      .upsert(updateData)
+      .update(updateData)
+      .eq('id', noteId)
       .select()
       .single()
+    
     if (error) {
-      console.error(error)
+      console.error('Database error:', error)
       return NextResponse.json({ error: 'Failed to save note' }, { status: 500 })
     }
 
     return NextResponse.json(data)
-  } catch (error) {
-    console.error(error)
+  } catch (err) {
+    console.error('Unexpected error:', err)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -99,14 +104,15 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
       .delete()
       .eq('id', noteId)
       .select()
+    
     if (error) {
+      console.error('Database error:', error)
       return NextResponse.json({ error: 'Failed to delete note' }, { status: 500 })
     }
 
-    console.log(data)
-
     return NextResponse.json(data)
-  } catch (error) {
+  } catch (err) {
+    console.error('Unexpected error:', err)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

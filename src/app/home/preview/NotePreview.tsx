@@ -9,10 +9,14 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-import { calculateTimeAgo } from "@/utils/math/time"
+import { calculateTimeAgo } from "@/lib/utils"
 import { useRouter } from "next/navigation"
+import { useTransition } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function NotePreview({ note, onDelete }: { note: Note, onDelete: (deletedNoteId: string) => void }) {
+  const [isDeletePending, startDeleteTransition] = useTransition()
+
   const router = useRouter()
 
   function handleOpen() {
@@ -20,21 +24,23 @@ export default function NotePreview({ note, onDelete }: { note: Note, onDelete: 
   }
 
   function handleOpenCompanionLink() {
-    router.push(`/companion/${note.id}`)
+    router.push(`/companion/${note.display_id}`)
   }
 
   async function handleDelete() {
-    try {
-      const response = await fetch(`/api/notes/${note.id}`, {
-        method: 'DELETE',
-      })
-      if (!response.ok) {
-        throw new Error('Failed to delete note')
+    startDeleteTransition(async () => {
+      try {
+        const response = await fetch(`/api/notes/${note.id}`, {
+          method: 'DELETE',
+        })
+        if (!response.ok) {
+          throw new Error('Failed to delete note')
+        }
+        onDelete(note.id)
+      } catch (error) {
+        console.error(error)
       }
-      onDelete(note.id)
-    } catch (error) {
-      console.error(error)
-    }
+    })
   }
 
   return (
@@ -43,9 +49,15 @@ export default function NotePreview({ note, onDelete }: { note: Note, onDelete: 
         <Link key={note.id} href={`/note/${note.id}`} className="">
           <div className="flex flex-col space-y-3" >
             <div className="relative aspect-video bg-neutral-700 border-[.5px] border-neutral-600 rounded-xl overflow-hidden">
+              {isDeletePending && (
+                <div className="absolute top-0 left-0 size-full bg-neutral-800/50 flex items-center justify-center backdrop-blur-xl">
+                  <Loader2 className="size-3 animate-spin text-neutral-400" />
+                </div>
+              )}
+
               <div className="absolute top-2 right-2">
                 <div className="bg-neutral-800 text-neutral-400 rounded-md px-2 py-1">
-                  <div className="font-bold"> {note.id.slice(0, 8).toUpperCase()} </div>
+                  <div className="font-bold"> {note.display_id} </div>
                 </div>
               </div>
             </div>

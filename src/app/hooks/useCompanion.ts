@@ -4,12 +4,16 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 
 export function useCompanion(noteId: string) {
-  const socket = useRef<Socket>(null)
+  const socket = useRef<Socket | null>(null)
 
-  const [image, setImage] = useState<Blob>();
+  const [image, setImage] = useState<ArrayBuffer>();
 
   useEffect(() => {
-    if (socket.current) return;
+    if (socket.current) {
+      socket.current.disconnect();
+      socket.current = null;
+    }
+
     socket.current = io(process.env.NEXT_PUBLIC_WS_URL!, {
       extraHeaders: {
         'note-id': noteId,
@@ -18,12 +22,15 @@ export function useCompanion(noteId: string) {
     socket.current.on('image', setImage);
 
     return () => {
-      socket.current?.disconnect();
+      if (socket.current) {
+        socket.current.disconnect();
+        socket.current = null;
+      }
     };
   }, [noteId])
 
   const sendImage = useCallback(
-    (image: Blob) => socket.current?.emit('image', image),
+    (image: ArrayBuffer) => socket.current?.emit('image', image),
     []
   )
 

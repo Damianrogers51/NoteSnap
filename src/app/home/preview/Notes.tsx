@@ -1,5 +1,7 @@
-import { createClient } from "@/utils/supabase/server"
+import { createClient } from "@/lib/supabase/server"
 import NotePreviews from "./NotePreviews"
+
+export const revalidate = 0;
 
 export default async function Notes() {
   const supabase = await createClient()

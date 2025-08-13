@@ -1,5 +1,6 @@
-import { createClient } from '@/utils/supabase/server'
-import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
+import {  NextResponse } from 'next/server'
+import { generateDisplayId } from '@/lib/utils'
 
 /**
  * GET /api/notes
@@ -12,12 +13,15 @@ export async function GET() {
   try {
     const supabase = await createClient()
     const { data, error } = await supabase.from('notes').select('*')
+    
     if (error) {
+      console.error('Database error:', error)
       return NextResponse.json({ error: 'Failed to fetch notes' }, { status: 500 })
     }
 
     return NextResponse.json(data)
-  } catch (error) {
+  } catch (err) {
+    console.error('Unexpected error:', err)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -34,15 +38,18 @@ export async function POST() {
     const supabase = await createClient()
     const { data, error } = await supabase
       .from('notes')
-      .insert({})
+      .insert({ display_id: generateDisplayId() })
       .select()
       .single()
+    
     if (error) {
+      console.error('Database error:', error)
       return NextResponse.json({ error: 'Failed to create note' }, { status: 500 })
     }
 
     return NextResponse.json(data)
-  } catch (error) {
+  } catch (err) {
+    console.error('Unexpected error:', err)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useCallback } from "react";
+import { useEffect, useMemo, useCallback, useRef, TransitionStartFunction } from "react";
+import { Note } from "../Note";
+import { Check } from "lucide-react";
 import { BlockNoteView } from "@blocknote/mantine";
 import { Block, BlockNoteEditor, PartialBlock } from "@blocknote/core";
-import { Note } from "../Note";
+import { toast } from "@/components/ui/toast"
 
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css"
@@ -12,11 +14,13 @@ import "./styles.css"
 
 export interface EditorProps {
   note: Note
-  image?: Blob;
-  setIsSaving: (isSaving: boolean) => void;
+  startEditorSaveTransition: TransitionStartFunction
+  image?: ArrayBuffer;
 }
 
-export default function Editor({ note, image, setIsSaving }: EditorProps) {
+export default function Editor({ note, startEditorSaveTransition, image }: EditorProps) {
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  
   const editor = useMemo(() => {
     const initialContent = note.content !== null
       ? JSON.parse(note.content) as PartialBlock[]
@@ -34,6 +38,7 @@ export default function Editor({ note, image, setIsSaving }: EditorProps) {
 
   useEffect(() => {
     if (image && editor) {
+      const blob = new Blob([image], { type: 'image/jpeg' });
       const reader = new FileReader();
       reader.onload = (e) => {
         const dataUrl = e.target?.result as string;
@@ -50,19 +55,24 @@ export default function Editor({ note, image, setIsSaving }: EditorProps) {
           editor.getTextCursorPosition().block,
           "after"
         );
+        toast({
+          title: "Image Added",
+          description: "An image has been successfully added to your note",
+          icon: <Check className="size-3 text-green-600" />
+        })
       };
-      reader.readAsDataURL(image);
+      reader.readAsDataURL(blob);
     }
   }, [image, editor]);
 
-  const saveDocument = useCallback((() => {
-    let timeoutId: NodeJS.Timeout;
+  const saveDocument = useCallback((blocks: Block[]) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
     
-    return (blocks: Block[]) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(async () => {
+    timeoutRef.current = setTimeout(async () => {
+      startEditorSaveTransition(async () => {
         try {
-          setIsSaving(true)
           const response = await fetch(`/api/notes/${note.id}`, {
             method: 'POST',
             headers: {
@@ -75,21 +85,18 @@ export default function Editor({ note, image, setIsSaving }: EditorProps) {
           if (!response.ok) {
             throw new Error('Failed to save document')
           }
-          setIsSaving(false)
-        } catch (error) {
-          setIsSaving(false)
+        } catch (err) {
+          console.error('Failed to save document:', err)
         }
-      }, 2000);
-    };
-  })(), [note.id, setIsSaving]);
+      })
+    }, 1000);
+  }, [note.id, startEditorSaveTransition]);
 
   return (
-    <div className="size-full">
-      <BlockNoteView 
-        editor={editor} 
-        onChange={() => saveDocument(editor.document)} 
-        theme="light"
-      />
-    </div>
+    <BlockNoteView 
+      editor={editor} 
+      onChange={() => saveDocument(editor.document)} 
+      theme="light"
+    />
   )
 }
