@@ -4,7 +4,7 @@ export default async function CompanionPage({ params }: { params: Promise<{ note
   const { noteId } = await params;
 
   return (
-    <div className="flex flex-col items-center h-screen max-h-screen px-8">
+    <div className="flex flex-col items-center h-screen max-h-screen px-8 overflow-y-hidden">
       <div className="flex flex-col items-center justify-center h-full max-w-4xl space-y-8">
         <div className="flex flex-col items-center space-y-4">
           <div className="bg-neutral-300 text-neutral-500 font-semibold rounded-lg px-2 py-1">
