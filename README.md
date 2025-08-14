@@ -114,7 +114,7 @@ The application uses Socket.IO for real-time communication with a dedicated WebS
 
 #### One-way Communication
 
-While WebSockets are inherently bidirectional communication channels, our architecture implements them as unidirectional streams, allowing images to flow exclusively from companion clients to note clients.
+While WebSockets are inherently bidirectional communication channels, here they are implemented as one-way streams, meant to transfer images exclusively from companion clients to note clients. 
 
 ```
 ┌─────────────────┐          ┌──────────────┐          ┌─────────────────┐
@@ -127,7 +127,7 @@ While WebSockets are inherently bidirectional communication channels, our archit
                              (grouped by note_id)
 ```
 
-This design choice simplifies the system architecture by establishing a clear data flow pattern where companion devices serve as image sources and note clients act as display endpoints.
+This design choice simplifies the system architecture by establishing a clear data flow pattern where companion devices serve images and note clients act as display endpoints.
 
 #### Room-based Communication
 
