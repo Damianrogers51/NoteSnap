@@ -38,7 +38,7 @@ pnpm install
 bun install
 ```
 
-3. Create a `.env.local` file in the root directory with your Supabase credentials:
+3. Run `touch .env.local` to create an env file in the root directory and copy these values:
 ```env
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 NEXT_PUBLIC_WS_URL=https://notesnap-server-production.up.railway.app
