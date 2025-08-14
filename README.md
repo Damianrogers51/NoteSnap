@@ -23,7 +23,7 @@ A modern note-taking application built with Next.js that allows you to create, e
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Damianrogers51/NoteSnap.git
 cd notesnap
 ```
 
@@ -41,7 +41,7 @@ bun install
 3. Create a `.env.local` file in the root directory with your Supabase credentials:
 ```env
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
-NEXT_PUBLIC_WS_URL=http://localhost:8080
+NEXT_PUBLIC_WS_URL=https://notesnap-server-production.up.railway.app
 NEXT_PUBLIC_SUPABASE_URL=https://fhggqijhweqfgzayfbdl.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZoZ2dxaWpod2VxZmd6YXlmYmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ4NzIyNTcsImV4cCI6MjA3MDQ0ODI1N30.arMG9RUGTNQ97fgOTMibDwyxftcomySuASRW9NsrGYY
 ```
