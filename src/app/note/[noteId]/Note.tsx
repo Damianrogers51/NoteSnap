@@ -29,18 +29,20 @@ export default function Note({ note }: { note: Note }) {
   const router = useRouter();
 
   return (
-    <div className="relative flex justify-center w-screen min-h-screen px-8 pt-12">
-      <div className="fixed top-8 left-8 flex items-center space-x-2">
-        <button onClick={() => router.push('/')} className="text-neutral-300 hover:text-foreground transition cursor-pointer">
-          <ChevronLeft className="w-4 h-4" />
-        </button>
-        {(isTitleSavePending || isEditorSavePending) && (
-          <Loader2 className="size-3 animate-spin text-neutral-300" />
-        )}
-      </div>
+    <div className="relative flex justify-center w-screen min-h-screen">
+      <div className="fixed top-0 left-0 right-0 bg-background sm:bg-transparent px-2 py-2 flex sm:border-none border-b-[.5px] border-neutral-100 z-10">
+        <div className="flex items-center space-x-2 backdrop-blur-sm">
+          <button onClick={() => router.push('/')} className="text-neutral-300 hover:text-foreground transition cursor-pointer">
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          {(isTitleSavePending || isEditorSavePending) && (
+            <Loader2 className="size-3 animate-spin text-neutral-300" />
+          )}
+        </div>
 
-      <div className="fixed bottom-8 right-8 flex items-center space-x-2 text-neutral-300 z-10">
-        <CompanionCode displayId={note.display_id} />
+        <div className="flex items-center text-neutral-300 ml-auto">
+          <CompanionCode displayId={note.display_id} />
+        </div>
       </div>
 
       <div className="flex flex-col w-full max-w-5xl space-y-8">

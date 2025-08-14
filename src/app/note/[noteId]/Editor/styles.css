@@ -16,3 +16,17 @@
 .bn-block, .bn-block-content {
   padding-inline: 12px;
 }
+
+@media (max-width: 640px) {
+  .bn-container[data-color-scheme], .bn-editor {
+    padding-inline: 0;
+  }
+
+  .bn-container[data-color-scheme] .bn-side-menu {
+    display: none;
+  }
+
+  .bn-container[data-color-scheme] .bn-block, .bn-container[data-color-scheme] .bn-block-content {
+    padding-inline: 0;
+  }
+}

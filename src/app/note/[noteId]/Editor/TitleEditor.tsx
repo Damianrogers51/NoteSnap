@@ -47,7 +47,7 @@ export default function TitleEditor({ note, startTitleSaveTransition }: { note: 
   return (
     <div
       ref={titleRef}
-      className="text-4xl font-bold pl-19 outline-none"
+      className="text-4xl font-bold sm:pl-19 outline-none"
       contentEditable
       onInput={handleTitleChange}
       suppressContentEditableWarning={true}
