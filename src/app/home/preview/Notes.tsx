@@ -5,7 +5,7 @@ export const revalidate = 0;
 
 export default async function Notes() {
   const supabase = await createClient()
-  const { data: partialNotes, error } = await supabase.from('notes').select('*').order('updated_at', { ascending: false })
+  const { data: partialNotes, error } = await supabase.from('notes').select('id, title, display_id, updated_at').order('updated_at', { ascending: false })
   if (error) {
     return <div>Error: {error.message}</div>
   }
