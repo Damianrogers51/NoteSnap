@@ -29,7 +29,7 @@ export default function Note({ note }: { note: Note }) {
   const router = useRouter();
 
   return (
-    <div className="relative flex justify-center w-screen min-h-screen">
+    <div className="relative flex justify-center w-screen h-full pb-8">
       <div className="fixed top-0 left-0 right-0 bg-background sm:bg-transparent sm:px-4 sm:py-4 px-2 py-2 flex sm:border-none border-b-[.5px] border-neutral-100 z-10">
         <div className="flex items-center space-x-2 backdrop-blur-sm">
           <button onClick={() => router.push('/')} className="text-neutral-300 hover:text-foreground transition cursor-pointer">
