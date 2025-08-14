@@ -75,19 +75,17 @@ bun dev
 ```
 notesnap/
 ├── src/
-│   ├── app/                    # Next.js App Router
+│   ├── app/                   # Next.js App Router
 │   │   ├── api/               # API routes
 │   │   │   └── notes/         # Note CRUD operations
 │   │   ├── companion/         # Companion link pages
 │   │   ├── home/              # Home page components
 │   │   ├── note/              # Note editing pages
 │   │   └── hooks/             # Custom React hooks
-│   ├── components/            # Reusable UI components
+│   ├── components/            
 │   │   └── ui/               # shadcn/ui components
-│   └── lib/                   # Utility functions
+│   └── lib/                  # Utility functions
 │       └── supabase/         # Supabase client configuration
-├── data/                      # Local data storage
-└── public/                    # Static assets
 ```
 
 ### Key Components
@@ -98,7 +96,7 @@ notesnap/
 - **API Routes**: Handle CRUD operations for notes
 
 #### 2. **Companion System**
-- **`/companion/[noteId]`**: Companion link page for image sharing
+- **`/companion/[displayId]`**: Companion link page for image sharing
 - **Real-time Updates**: Uses Socket.IO for live image transmission
 - **QR Code Generation**: Easy sharing via QR codes
 
@@ -106,32 +104,6 @@ notesnap/
 - **BlockNote Integration**: Rich text editor with block-based editing
 - **Auto-save**: Real-time saving as you type
 - **Image Support**: Drag, drop, and paste image functionality
-
-### System Architecture
-
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Next.js App   │    │  WebSocket      │    │   Supabase      │
-│   (Port 3000)   │    │  Server         │    │   Database      │
-│                 │    │  (Port 8080)    │    │                 │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Note Clients  │    │  Socket.IO      │    │   PostgreSQL    │
-│   (Browsers)    │◄──►│  Rooms          │    │   Tables        │
-│                 │    │                 │    │                 │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         ▲                       ▲
-         │                       │
-         ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐
-│  Companion      │    │  Image Data     │
-│  Clients        │───►│  Transmission   │
-│  (Mobile/Brows) │    │                 │
-└─────────────────┘    └─────────────────┘
-```
 
 ### Data Flow
 
