@@ -94,63 +94,33 @@ notesnap/
 - **Real-time Updates**: Uses Socket.IO for live image transmission
 - **QR Code Generation**: Easy sharing via QR codes
 
-#### 3. **Editor System**
-- **BlockNote Integration**: Rich text editor with block-based editing
-- **Auto-save**: Real-time saving as you type
-- **Image Support**: Drag, drop, and paste image functionality
-
-### Data Flow
-
-1. **Note Creation**: Users create notes through the home page
-2. **Real-time Editing**: Changes are saved automatically via API calls to Supabase
-3. **Companion Sharing**: Generate companion links for image sharing
-4. **Image Attachment**: Images sent via companion links appear in real-time through WebSocket
-5. **Persistence**: All note data is stored in Supabase PostgreSQL database
-
-### WebSocket Server Details
-
-The WebSocket server is a separate Node.js application that handles real-time image sharing:
-
-#### Server Setup
-```javascript
-const { Server } = require('socket.io');
-const io = new Server(8080, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
-});
-```
-
-#### Room-based Communication
-- **Room Creation**: Each note's `display_id` becomes a Socket.IO room
-- **Client Isolation**: Clients only receive messages for their specific note
-- **Scalability**: Multiple notes can operate simultaneously without interference
-
-#### Message Flow
-1. **Connection**: Client connects with `note-id` in headers
-2. **Room Assignment**: Server automatically assigns client to note-specific room
-3. **Image Broadcasting**: Companion sends image, server broadcasts to room
-4. **Real-time Update**: Note client receives image and updates UI immediately
-
 ### API Endpoints
 
 - `GET /api/notes` - Fetch all notes
 - `POST /api/notes` - Create a new note
 - `GET /api/notes/[noteId]` - Fetch a specific note
-- `PUT /api/notes/[noteId]` - Update a note
+- `POST /api/notes/[noteId]` - Update a note
 - `DELETE /api/notes/[noteId]` - Delete a note
 
-### Real-time Features
+### WebSocket Server
+
+As mentioned earlier, NoteSnap employs a dedicated Node.js WebSocket server for real-time communication.
 
 The application uses Socket.IO for real-time communication with a dedicated WebSocket server:
 
-#### WebSocket Server Architecture
+#### WebSocket Server Features
 - **Separate Node.js Server**: Runs independently on port 8080 (configurable via `NEXT_PUBLIC_WS_URL`)
 - **One-way Communication**: Companion clients send images, note clients receive and display them
 - **Room-based Isolation**: Each note has its own Socket.IO room based on the `display_id`
 
-#### Socket.IO Room Implementation
+#### Room-based Communication
+
+Socket.io also simplifies targeting broadcastion through "rooms" which allows us to focus broadcasting of image events to specific connection subsets. This ensures images are delivered only to their designated notes rather than being broadcast to all clients connected to the WebSocket server.
+
+To implement room-based communication, we use each note's ```display_id``` field—a unique 5-character string—to instantiate rooms. This approach serves dual purposes: enabling targeted WebSocket communication and providing users with a short, shareable identifier for quick access to a note's companion link.
+
+Psuedocode for this implementation can be found below:
+
 ```javascript
 // WebSocket server pseudo-code
 io.on('connection', (socket) => {
@@ -194,32 +164,6 @@ export function useCompanion(noteId: string) {
   return [image, sendImage] as const;
 }
 ```
-
-**Companion Client**
-```typescript
-// Companion clients send images to the same room
-const socket = io(process.env.NEXT_PUBLIC_WS_URL!, {
-  extraHeaders: {
-    'note-id': noteId, // Joins the same room as note client
-  },
-});
-
-// Send image data
-socket.emit('image', imageArrayBuffer);
-```
-
-**Key Features**
-- **Room Management**: Automatic room assignment based on `display_id` in connection headers
-- **One-way Communication**: Companion clients send, note clients receive
-- **Real-time Updates**: Images appear instantly in the note editor
-- **Connection Handling**: Automatic reconnection and cleanup
-
-#### Data Flow for Image Sharing
-1. **Companion Device**: Captures/selects image
-2. **WebSocket Connection**: Establishes connection with note-specific room
-3. **Image Transmission**: Sends image data to WebSocket server
-4. **Room Broadcasting**: Server broadcasts to all clients in the same note room
-5. **Note Client**: Receives image and updates the editor in real-time
 
 #### Connection Management
 - **Automatic Reconnection**: Socket.IO handles connection drops and reconnects
