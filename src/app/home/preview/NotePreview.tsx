@@ -9,13 +9,19 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { calculateTimeAgo } from "@/lib/utils"
 import { useRouter } from "next/navigation"
-import { useTransition } from "react";
+import { useTransition, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 export default function NotePreview({ note, onDelete }: { note: Note, onDelete: (deletedNoteId: string) => void }) {
   const [isDeletePending, startDeleteTransition] = useTransition()
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   const router = useRouter()
 
@@ -27,7 +33,12 @@ export default function NotePreview({ note, onDelete }: { note: Note, onDelete: 
     router.push(`/companion/${note.display_id}`)
   }
 
-  async function handleDelete() {
+  function handleDeleteClick() {
+    setIsDeleteDialogOpen(true)
+  }
+
+  async function handleConfirmDelete() {
+    setIsDeleteDialogOpen(false)
     startDeleteTransition(async () => {
       try {
         const response = await fetch(`/api/notes/${note.id}`, {
@@ -44,39 +55,64 @@ export default function NotePreview({ note, onDelete }: { note: Note, onDelete: 
   }
 
   return (
-    <ContextMenu>
-      <ContextMenuTrigger>
-        <Link key={note.id} href={`/note/${note.id}`} className="">
-          <div className="flex flex-col space-y-3" >
-            <div className="relative aspect-video bg-neutral-700 border-[.5px] border-neutral-600 rounded-xl overflow-hidden">
-              {isDeletePending && (
-                <div className="absolute top-0 left-0 size-full bg-neutral-800/50 flex items-center justify-center backdrop-blur-xl">
-                  <Loader2 className="size-3 animate-spin text-neutral-400" />
-                </div>
-              )}
+    <>
+      <ContextMenu>
+        <ContextMenuTrigger>
+          <Link key={note.id} href={`/note/${note.id}`} className="">
+            <div className="flex flex-col space-y-3" >
+              <div className="relative aspect-video bg-neutral-700 border-[.5px] border-neutral-600 rounded-xl overflow-hidden">
+                {isDeletePending && (
+                  <div className="absolute top-0 left-0 size-full bg-neutral-800/50 flex items-center justify-center backdrop-blur-xl">
+                    <Loader2 className="size-3 animate-spin text-neutral-400" />
+                  </div>
+                )}
 
-              <div className="absolute top-2 right-2">
-                <div className="bg-neutral-800 text-neutral-400 rounded-md px-2 py-1">
-                  <div className="font-bold"> {note.display_id} </div>
+                <div className="absolute top-2 right-2">
+                  <div className="bg-neutral-800 text-neutral-400 rounded-md px-2 py-1">
+                    <div className="font-bold"> {note.display_id} </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="flex flex-col space-y-1 leading-tight">
-              <div className="text-xs font-semibold tracking-[-.5px]"> {note.title} </div>
-              <div className="opacity-60"> Edited {calculateTimeAgo(note.updated_at)} </div>
+              <div className="flex flex-col space-y-1 leading-tight">
+                <div className="text-xs font-semibold tracking-[-.5px]"> {note.title} </div>
+                <div className="opacity-60"> Edited {calculateTimeAgo(note.updated_at)} </div>
+              </div>
+            </div>
+          </Link>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem onClick={handleOpen}> Open </ContextMenuItem>
+          <ContextMenuItem onClick={handleOpenCompanionLink}> Open Companion Link </ContextMenuItem>
+
+          <ContextMenuSeparator />
+
+          <ContextMenuItem onClick={handleDeleteClick}> Delete </ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent>
+          <DialogTitle className="sr-only"> Delete Note </DialogTitle>
+
+          <div className="flex flex-col space-y-2">
+            <div className="font-medium">
+              Delete Note
+            </div>
+            <div className="text-foreground opacity-60">
+              Are you sure you want to delete &quot;{note.title}&quot;? This action cannot be undone.
             </div>
           </div>
-        </Link>
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem onClick={handleOpen}> Open </ContextMenuItem>
-        <ContextMenuItem onClick={handleOpenCompanionLink}> Open Companion Link </ContextMenuItem>
 
-        <ContextMenuSeparator />
-
-        <ContextMenuItem onClick={handleDelete}> Delete </ContextMenuItem>
-      </ContextMenuContent>
-    </ContextMenu>
+          <button
+            onClick={handleConfirmDelete}
+            disabled={isDeletePending}
+            className="px-4 py-2 font-semibold bg-foreground text-background rounded-md hover:bg-foreground/97 transition cursor-pointer"
+          >
+            Delete
+          </button>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }

@@ -65,7 +65,7 @@ export default function CompanionForm({ id }: { id: string }) {
       <button
         onClick={handleAttachImage}
         disabled={!image}
-        className={`w-80 text-center border-neutral-300 px-3 py-2 rounded-xl hover:opacity-[.97] transition-all duration-100 flex items-center justify-center space-x-2 ${!image ? 'text-neutral-500 border-[.5px]' : 'bg-foreground text-neutral-300 font-semibold cursor-pointer'}`}>
+        className={`w-80 text-center border-neutral-300 px-3 py-2 rounded-xl hover:opacity-[.97] transition-all duration-100 flex items-center justify-center space-x-2 ${!image ? 'text-neutral-500 border-[.5px]' : 'bg-foreground text-background font-semibold cursor-pointer'}`}>
           {imageSent ? (
             <>
               <Check className="size-4" />
