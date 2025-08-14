@@ -35,8 +35,8 @@ export default function CompanionForm({ id }: { id: string }) {
   }
 
   return (
-    <div className="flex flex-col items-center space-y-4 w-full max-w-sm">
-      <div className={`relative flex flex-col items-center aspect-[3/4] w-full max-w-80 bg-neutral-100 rounded-xl cursor-pointer`}>
+    <div className="flex flex-col items-center space-y-4 w-full">
+      <div className={`relative flex flex-col items-center aspect-[3/4] w-full max-w-96 bg-neutral-100 rounded-xl cursor-pointer`}>
         <form>
           <input 
             type="file" 
