@@ -70,7 +70,12 @@ bun dev
 
 ## Architecture
 
-### Project Structure
+### Overview
+NoteSnap's architecture consists of three primary components: a frontend client for user interface and display, a backend server for API handling and database operations, and a dedicated WebSocket server enabling real-time communication between clients.
+
+This repository is used for 
+
+### Project File Structure
 
 ```
 notesnap/
@@ -87,8 +92,6 @@ notesnap/
 │   └── lib/                  # Utility functions
 │       └── supabase/         # Supabase client configuration
 ```
-
-### Key Components
 
 #### 1. **Note Management**
 - **`/` (Home)**: Displays all notes with previews
