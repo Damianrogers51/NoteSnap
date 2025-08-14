@@ -60,7 +60,7 @@ export default function NotePreview({ note, onDelete }: { note: Note, onDelete: 
         <ContextMenuTrigger>
           <Link key={note.id} href={`/note/${note.id}`} className="">
             <div className="flex flex-col space-y-3" >
-              <div className="relative aspect-video bg-neutral-700 border-[.5px] border-neutral-600 rounded-xl overflow-hidden">
+              <div className="relative aspect-video bg-neutral-700 border-[.5px] border-neutral-600 hover:opacity-[.97] transition rounded-xl overflow-hidden">
                 {isDeletePending && (
                   <div className="absolute top-0 left-0 size-full bg-neutral-800/50 flex items-center justify-center backdrop-blur-xl">
                     <Loader2 className="size-3 animate-spin text-neutral-400" />
