@@ -8,12 +8,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function CompanionCode({ displayId }: { displayId: string }) {
+  const [baseUrl, setBaseUrl] = useState<string>("");
   const { SVG } = useQRCode();
+
+  useEffect(() => {
+    // Use the current domain dynamically
+    if (typeof window !== 'undefined') {
+      setBaseUrl(window.location.origin);
+    } else {
+      // Fallback for SSR
+      setBaseUrl(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000');
+    }
+  }, []);
+
   const QRCode = (
     <SVG
-      text={`${process.env.NEXT_PUBLIC_BASE_URL!}/companion/${displayId}`}
+      text={`${baseUrl}/companion/${displayId}`}
       options={{
         margin: 2,
         width: 300,
