@@ -58,7 +58,7 @@ export default function CompanionCode({ displayId }: { displayId: string }) {
               {QRCode}
             </div>
 
-            <Link href={`/companion/${displayId}`} className="w-full text-center bg-foreground text-background font-semibold px-4 py-2 rounded-lg hover:opacity-[.97] transition">
+            <Link href={`/companion/${displayId}`} target="_blank" className="w-full text-center bg-foreground text-background font-semibold px-4 py-2 rounded-lg hover:opacity-[.97] transition">
               Open Companion Link
             </Link>
           </div>
