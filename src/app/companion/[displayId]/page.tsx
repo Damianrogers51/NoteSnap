@@ -1,14 +1,14 @@
 import CompanionForm from "./CompanionForm";
 
-export default async function CompanionPage({ params }: { params: Promise<{ noteId: string }> }) {
-  const { noteId } = await params;
+export default async function CompanionPage({ params }: { params: Promise<{ displayId: string }> }) {
+  const { displayId } = await params;
 
   return (
-    <div className="flex flex-col h-[100dvh] items-center justify-center flex-1 w-full space-y-6 rounded-xl">
+    <div className="relative flex flex-col h-[100dvh] items-center justify-center flex-1 w-full space-y-6 rounded-xl">
       <div className="flex flex-col items-center space-y-6 w-full max-w-72">
         <div className="flex flex-col items-center space-y-3">
           <div className="bg-neutral-300 text-neutral-500 font-semibold rounded-lg px-2 py-1">
-              {noteId.slice(0, 8).toUpperCase()}
+              {displayId}
           </div>
 
           <div className="flex flex-col items-center space-y-1 text-center">
@@ -17,7 +17,7 @@ export default async function CompanionPage({ params }: { params: Promise<{ note
           </div>
         </div>
 
-        <CompanionForm id={noteId} />
+        <CompanionForm id={displayId} />
       </div>
     </div>
   );
