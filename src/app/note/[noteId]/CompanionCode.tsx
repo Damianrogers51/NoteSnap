@@ -27,14 +27,14 @@ export default function CompanionCode({ displayId }: { displayId: string }) {
   
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger className="outline-none">
         <div className="flex items-center backdrop-blur-sm px-2 py-1 rounded-lg cursor-pointer">
           <div className="text-neutral-300 text-3xl font-semibold hover:text-foreground transition cursor-pointer">
             {displayId}
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="outline-none">
         <DialogTitle className="sr-only"> Companion Code </DialogTitle>
 
         <div className="max-w-xl flex flex-col items-center justify-center py-4 space-y-8">

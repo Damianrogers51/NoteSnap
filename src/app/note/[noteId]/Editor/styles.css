@@ -19,7 +19,7 @@
 
 @media (max-width: 640px) {
   .bn-container[data-color-scheme], .bn-editor {
-    padding-inline: 0;
+    padding-inline: 0px;
   }
 
   .bn-container[data-color-scheme] .bn-side-menu {
@@ -27,6 +27,6 @@
   }
 
   .bn-container[data-color-scheme] .bn-block, .bn-container[data-color-scheme] .bn-block-content {
-    padding-inline: 0;
+    padding-inline: 0px;
   }
 }
