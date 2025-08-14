@@ -5,19 +5,18 @@ export default async function CompanionPage({ params }: { params: Promise<{ id: 
   const { id } = await params;
 
   const supabase = await createClient();
-  const displayId = id.length === 5 
-    ? id
-    : (await supabase.from('notes').select('*').eq('id', id).single()).data?.display_id;
-  if (!displayId) {
-    return <div> Error</div>;
-  }
-
+  const { data: partialNote, error } = id.length === 5 
+    ? await supabase.from('notes').select('id, display_id').eq('display_id', id).single()
+    : await supabase.from('notes').select('id, display_id').eq('id', id).single();
+  if (error || !partialNote) {
+    return <div> Error </div>;
+  }  
   return (
     <div className="relative flex flex-col h-[100dvh] items-center justify-center flex-1 w-full space-y-6 rounded-xl">
       <div className="flex flex-col items-center space-y-6 w-full max-w-72">
         <div className="flex flex-col items-center space-y-3">
           <div className="bg-neutral-300 text-neutral-500 font-semibold rounded-lg px-2 py-1">
-              {displayId}
+              {partialNote.display_id}
           </div>
 
           <div className="flex flex-col items-center space-y-1 text-center">
@@ -26,7 +25,7 @@ export default async function CompanionPage({ params }: { params: Promise<{ id: 
           </div>
         </div>
 
-        <CompanionForm id={displayId} />
+        <CompanionForm id={partialNote.id} />
       </div>
     </div>
   );

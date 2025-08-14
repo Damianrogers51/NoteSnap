@@ -20,7 +20,7 @@ export default function Note({ note }: { note: Note }) {
   const [isTitleSavePending, startTitleSaveTransition] = useTransition()
   const [isEditorSavePending, startEditorSaveTransition] = useTransition()
 
-  const [image] = useCompanion(note.display_id);
+  const [image] = useCompanion(note.id);
   const router = useRouter();
 
   function handleBack() {
