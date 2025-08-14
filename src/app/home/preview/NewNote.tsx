@@ -5,12 +5,12 @@ import { CopyPlus, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function NewNote() {
-  const [isPending, startTransition] = useTransition()
+  const [isCreatePending, startCreateTransition] = useTransition()
 
   const router = useRouter()
 
   async function handleCreateNote() {
-    startTransition(async () => {
+    startCreateTransition(async () => {
       try {
         const response = await fetch('/api/notes', {
           method: 'POST',
@@ -35,7 +35,7 @@ export default function NewNote() {
         onClick={handleCreateNote}
         className="flex items-center justify-center aspect-video bg-neutral-100 border-[.5px] border-neutral-300 rounded-xl overflow-hidden hover:bg-neutral-200 transition cursor-pointer space-y-2">
           <div className="flex flex-col items-center justify-center space-y-2 opacity-40">
-            {isPending ? (
+            {isCreatePending ? (
               <Loader2 className="size-3 animate-spin" />
             ) : (
               <CopyPlus className="size-3" />
