@@ -49,6 +49,7 @@ export default function Editor({ note, startEditorSaveTransition, image }: Edito
               props: {
                 url: dataUrl,
                 caption: "",
+                previewWidth: 200,
               },
             },
           ],
