@@ -64,8 +64,6 @@ bun dev
 ### Overview
 NoteSnap's architecture consists of three primary components: a frontend client for user interface and display, a backend server for API handling and database operations, and a dedicated WebSocket server enabling real-time communication between clients.
 
-This repository is used for 
-
 ### Project File Structure
 
 ```
@@ -108,7 +106,7 @@ As mentioned earlier, NoteSnap employs a dedicated Node.js WebSocket server for 
 
 The application uses Socket.IO for real-time communication with a dedicated WebSocket server:
 
-#### WebSocket Server Features
+**WebSocket Server Features**:
 - **Separate Node.js Server**: Runs independently on port 8080 (configurable via `NEXT_PUBLIC_WS_URL`)
 - **One-way Communication**: Companion clients send images, note clients receive and display them
 - **Room-based Isolation**: Each note has its own Socket.IO room based on the `display_id`
@@ -165,10 +163,10 @@ export function useCompanion(noteId: string) {
   return [image, sendImage] as const;
 }
 ```
-Key Implementation Details:
-- **Room Assignment: The note-id header automatically assigns the client to the appropriate Socket.io room, ensuring images are only shared between clients connected to the same note
-- **State Management: Uses React's useState to manage incoming image data as ArrayBuffer for efficient binary handling
-- **Connection Lifecycle: The useEffect hook manages the WebSocket connection lifecycle, establishing the connection on mount and cleaning up on unmount or when the noteId changes
-- **Real-time Updates: The socket listener directly updates the component state when new images arrive, triggering re-renders automatically
+**Key Implementation Details**:
+- **Room Assignment**: The note-id header automatically assigns the client to the appropriate Socket.io room, ensuring images are only shared between clients connected to the same note
+- **State Management**: Uses React's useState to manage incoming image data as ArrayBuffer for efficient binary handling
+- **Connection Lifecycle**: The useEffect hook manages the WebSocket connection lifecycle, establishing the connection on mount and cleaning up on unmount or when the noteId changes
+- **Real-time Updates**: The socket listener directly updates the component state when new images arrive, triggering re-renders automatically
 
 This implementation provides a clean, reusable interface that abstracts the complexity of WebSocket management while maintaining efficient real-time communication capabilities.
