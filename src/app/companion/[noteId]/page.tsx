@@ -12,7 +12,7 @@ export default async function CompanionPage({ params }: { params: Promise<{ note
           </div>
 
           <div className="flex flex-col items-center space-y-1 text-center">
-            <div className="text-2xl sm:text-3xl font-bold"> Companion Link </div>
+            <div className="text-3xl font-bold"> Companion Link </div>
             <div className="opacity-60"> Use this link to attach images directly to your note </div>
           </div>
         </div>
