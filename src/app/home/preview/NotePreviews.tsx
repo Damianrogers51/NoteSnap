@@ -9,12 +9,9 @@ export type PartialNote = Omit<Note, 'content'>
 
 export default function NotePreviews({ notes }: { notes: PartialNote[] }) {
   const [notesState, setNotesState] = useState(notes)
-  const [, startTransition] = useTransition()
 
   const handleNoteDelete = (deletedNoteId: string) => {
-    startTransition(() => {
-      setNotesState(prevNotes => prevNotes.filter(note => note.id !== deletedNoteId))
-    })
+    setNotesState(prevNotes => prevNotes.filter(note => note.id !== deletedNoteId))
   }
 
   useEffect(() => {
