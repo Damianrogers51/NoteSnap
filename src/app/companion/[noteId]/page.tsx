@@ -5,7 +5,7 @@ export default async function CompanionPage({ params }: { params: Promise<{ note
 
   return (
     <div className="flex flex-col items-center min-h-screen px-4 py-6 overflow-hidden">
-      <div className="flex flex-col items-center justify-center flex-1 w-full max-w-4xl space-y-6">
+      <div className="flex flex-col items-center justify-center flex-1 w-full max-w-4xl space-y-6 border-[.5px] border-red-500 rounded-xl">
         <div className="flex flex-col items-center space-y-3">
           <div className="bg-neutral-300 text-neutral-500 font-semibold rounded-lg px-2 py-1">
              {noteId.slice(0, 8).toUpperCase()}
