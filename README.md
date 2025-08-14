@@ -93,8 +93,24 @@ notesnap/
 - **Real-time Updates**: Uses Socket.IO for live image transmission
 - **QR Code Generation**: Easy sharing via QR codes
 
-### API Endpoints
+### Frontend Client
+The frontend is built using Next.js and React to handle UI rendering and state management, while also leveraging modern development tools including ShadCN for reusable/ accessible components. Next.JS also allows for simplified server-side rendering capabilities, which I looked to leverage as much as possible.
 
+#### BlockNote Editor Integration
+For the core editing experience, I selected BlockNote—a modern, block-based rich text editor inspired by Notion's interface. This choice aligns perfectly with the project's image-sharing objectives and provides several key advantages
+
+**BlockNote Features**:
+- **Block-Based Architecture**: Content is organized into discrete, moveable blocks (paragraphs, headings, images, etc.)
+- **Seamless Block Management**: Users can easily reorder, insert, and manipulate content blocks through intuitive drag-and-drop interactions
+- **Image Integration**: Native support for image blocks that integrate smoothly with our real-time image sharing system
+- **Modern UX**: Familiar interface patterns that reduce the learning curve for users accustomed to contemporary note-taking applications
+
+This editor foundation enables users to create dynamic, multimedia-rich notes while seamlessly incorporating images shared from their mobile devices, creating a super simple and intuite note-taking experience.
+
+### Backend APIs
+This application leverages Next.js API route handlers to manage all backend operations, ensuring a unified full-stack development experience. Similarly, all database mutations are handled exlusively on the server-side to maintain data integrity and security.
+
+**Endpoints
 - `GET /api/notes` - Fetch all notes
 - `POST /api/notes` - Create a new note
 - `GET /api/notes/[noteId]` - Fetch a specific note
@@ -102,7 +118,6 @@ notesnap/
 - `DELETE /api/notes/[noteId]` - Delete a note
 
 ### WebSocket Server
-
 As mentioned earlier, NoteSnap employs a dedicated Node.js WebSocket server for real-time communication.
 
 The application uses Socket.IO for real-time communication with a dedicated WebSocket server:
