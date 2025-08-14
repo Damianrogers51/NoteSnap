@@ -8,11 +8,6 @@ import { useRouter } from "next/navigation";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import TitleEditor from "./Editor/TitleEditor";
 
-export interface Attachment {
-  url: string;
-  name: string;
-}
-
 export interface Note {
   id: string
   display_id: string
