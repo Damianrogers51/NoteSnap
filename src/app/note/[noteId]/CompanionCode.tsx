@@ -10,7 +10,9 @@ import {
 import Link from "next/link";
 
 export default function CompanionCode({ displayId }: { displayId: string }) {
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : process.env.NEXT_PUBLIC_BASE_URL!;
+  const baseUrl = typeof window !== 'undefined'
+    ? window.location.origin
+    : process.env.NEXT_PUBLIC_BASE_URL!;
 
   const { SVG } = useQRCode();
   const QRCode = (

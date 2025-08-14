@@ -35,8 +35,8 @@ export default function CompanionForm({ id }: { id: string }) {
   }
 
   return (
-    <div className="flex flex-col items-center space-y-4">
-      <div className={`relative flex flex-col items-center aspect-[3/4] w-80 bg-neutral-100 rounded-xl cursor-pointer`}>
+    <div className="flex flex-col items-center space-y-4 w-full max-w-sm">
+      <div className={`relative flex flex-col items-center aspect-[3/4] w-full max-w-80 bg-neutral-100 rounded-xl cursor-pointer`}>
         <form>
           <input 
             type="file" 
@@ -56,7 +56,7 @@ export default function CompanionForm({ id }: { id: string }) {
           <div className="absolute top-0 left-0 size-full flex flex-col items-center justify-center border-[.5px] border-neutral-300 rounded-xl">
             <div className="flex flex-col items-center justify-center space-y-2 opacity-40">
               <Upload className="size-3" />
-              <div> Click here to upload </div>
+              <div className="text-sm"> Click here to upload </div>
             </div>
           </div>
         )}
@@ -65,7 +65,7 @@ export default function CompanionForm({ id }: { id: string }) {
       <button
         onClick={handleAttachImage}
         disabled={!image}
-        className={`w-80 text-center border-neutral-300 px-3 py-2 rounded-xl hover:opacity-[.97] transition-all duration-100 flex items-center justify-center space-x-2 ${!image ? 'text-neutral-500 border-[.5px]' : 'bg-foreground text-background font-semibold cursor-pointer'}`}>
+        className={`w-full max-w-80 text-center border-neutral-300 px-3 py-2 rounded-xl hover:opacity-[.97] transition-all duration-100 flex items-center justify-center space-x-2 ${!image ? 'text-neutral-500 border-[.5px]' : 'bg-foreground text-background font-semibold cursor-pointer'}`}>
           {imageSent ? (
             <>
               <Check className="size-4" />
