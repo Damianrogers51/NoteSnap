@@ -119,8 +119,6 @@ Socket.io also simplifies targeting broadcastion through "rooms" which allows us
 
 To implement room-based communication, we use each note's ```display_id``` field—a unique 5-character string—to instantiate rooms. This approach serves dual purposes: enabling targeted WebSocket communication and providing users with a short, shareable identifier for quick access to a note's companion link.
 
-Psuedocode for this implementation can be found below:
-
 ```javascript
 // WebSocket server pseudo-code
 io.on('connection', (socket) => {
