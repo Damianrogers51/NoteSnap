@@ -13,13 +13,7 @@ A modern note-taking application built with Next.js that allows you to create, e
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js 18+ 
-- npm, yarn, pnpm, or bun
-- Supabase account and project
-
-### Environment Setup
+### Setup
 
 1. Clone the repository:
 ```bash
