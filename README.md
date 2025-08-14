@@ -136,9 +136,12 @@ io.on('connection', (socket) => {
 });
 ```
 
-#### Client-Side Implementation
+#### Client-Side Connections
 
-**Note Client (useCompanion Hook)**
+For handling client-side WebSocket connections, I developed a custom React hook designed to be used by both note and companion clients to establish communication with our WebSocket server.
+
+The `useCompanion hook` encapsulates all WebSocket functionality required for real-time image sharing between note clients and their companion devices. This hook accepts a noteId parameter and returns the most recently sent image (used by the note client) along with a function to send images (used by the companion client). 
+
 ```typescript
 // src/app/hooks/useCompanion.ts
 export function useCompanion(noteId: string) {
@@ -162,8 +165,10 @@ export function useCompanion(noteId: string) {
   return [image, sendImage] as const;
 }
 ```
+Key Implementation Details:
+- **Room Assignment: The note-id header automatically assigns the client to the appropriate Socket.io room, ensuring images are only shared between clients connected to the same note
+- **State Management: Uses React's useState to manage incoming image data as ArrayBuffer for efficient binary handling
+- **Connection Lifecycle: The useEffect hook manages the WebSocket connection lifecycle, establishing the connection on mount and cleaning up on unmount or when the noteId changes
+- **Real-time Updates: The socket listener directly updates the component state when new images arrive, triggering re-renders automatically
 
-#### Connection Management
-- **Automatic Reconnection**: Socket.IO handles connection drops and reconnects
-- **Room Persistence**: Clients automatically rejoin their assigned rooms on reconnect
-- **Error Handling**: Graceful fallback when WebSocket server is unavailable
+This implementation provides a clean, reusable interface that abstracts the complexity of WebSocket management while maintaining efficient real-time communication capabilities.
