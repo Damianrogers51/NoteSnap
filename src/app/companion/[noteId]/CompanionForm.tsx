@@ -56,7 +56,7 @@ export default function CompanionForm({ id }: { id: string }) {
           <div className="absolute top-0 left-0 size-full flex flex-col items-center justify-center border-[.5px] border-neutral-300 rounded-xl">
             <div className="flex flex-col items-center justify-center space-y-2 opacity-40">
               <Upload className="size-3" />
-              <div className="text-sm"> Click here to upload </div>
+              <div> Click here to upload </div>
             </div>
           </div>
         )}
