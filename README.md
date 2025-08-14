@@ -2,15 +2,6 @@
 
 A modern note-taking application built with Next.js that allows you to create, edit, and collaborate on notes with real-time image attachments via companion links.
 
-## Features
-
-- **Rich Text Editor**: Powered by BlockNote for a modern writing experience
-- **Real-time Collaboration**: Share companion links to attach images directly to notes
-- **Responsive Design**: Works seamlessly across desktop and mobile devices
-- **Instant Saving**: Auto-saves your notes as you type
-- **Image Attachments**: Drag and drop or paste images directly into your notes
-- **Clean Interface**: Minimalist design focused on content creation
-
 ## Tech Stack
 
 - **Frontend**: Next.js 15, React 19, TypeScript
