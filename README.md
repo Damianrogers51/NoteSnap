@@ -110,7 +110,7 @@ This editor foundation enables users to create dynamic, multimedia-rich notes wh
 ### Backend APIs
 This application leverages Next.js API route handlers to manage all backend operations, ensuring a unified full-stack development experience. Similarly, all database mutations are handled exlusively on the server-side to maintain data integrity and security.
 
-**Endpoints
+**Endpoints**
 - `GET /api/notes` - Fetch all notes
 - `POST /api/notes` - Create a new note
 - `GET /api/notes/[noteId]` - Fetch a specific note
