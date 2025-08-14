@@ -1,7 +1,16 @@
+import { createClient } from "@/lib/supabase/server";
 import CompanionForm from "./CompanionForm";
 
-export default async function CompanionPage({ params }: { params: Promise<{ displayId: string }> }) {
-  const { displayId } = await params;
+export default async function CompanionPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+
+  const supabase = await createClient();
+  let displayId = id.length === 5 
+    ? id
+    : (await supabase.from('notes').select('*').eq('id', id).single()).data?.display_id;
+  if (!displayId) {
+    return <div> Error</div>;
+  }
 
   return (
     <div className="relative flex flex-col h-[100dvh] items-center justify-center flex-1 w-full space-y-6 rounded-xl">
