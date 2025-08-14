@@ -1,11 +1,13 @@
 'use client'
 
 import { useEffect, useState, useTransition } from "react"
-import { Note } from "../../note/[noteId]/Note"
 import NotePreview from "./NotePreview"
 import NewNote from "./NewNote"
+import { Note } from "@/app/note/[noteId]/Note"
 
-export default function NotePreviews({ notes }: { notes: Note[] }) {
+export type PartialNote = Omit<Note, 'content'>
+
+export default function NotePreviews({ notes }: { notes: PartialNote[] }) {
   const [notesState, setNotesState] = useState(notes)
   const [, startTransition] = useTransition()
 

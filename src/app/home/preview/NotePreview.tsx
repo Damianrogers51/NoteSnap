@@ -1,7 +1,6 @@
 'use client'
 
 import Link from "next/link"
-import { Note } from "../../note/[noteId]/Note";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -18,8 +17,9 @@ import { calculateTimeAgo } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useTransition, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { PartialNote } from "./NotePreviews";
 
-export default function NotePreview({ note, onDelete }: { note: Note, onDelete: (deletedNoteId: string) => void }) {
+export default function NotePreview({ note, onDelete }: { note: PartialNote, onDelete: (deletedNoteId: string) => void }) {
   const [isDeletePending, startDeleteTransition] = useTransition()
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
