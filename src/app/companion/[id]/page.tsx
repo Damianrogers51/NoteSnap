@@ -5,7 +5,7 @@ export default async function CompanionPage({ params }: { params: Promise<{ id: 
   const { id } = await params;
 
   const supabase = await createClient();
-  let displayId = id.length === 5 
+  const displayId = id.length === 5 
     ? id
     : (await supabase.from('notes').select('*').eq('id', id).single()).data?.display_id;
   if (!displayId) {
