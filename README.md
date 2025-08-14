@@ -59,6 +59,7 @@ bun dev
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
+
 ## Architecture
 
 ### Overview
@@ -110,6 +111,23 @@ The application uses Socket.IO for real-time communication with a dedicated WebS
 - **Separate Node.js Server**: Runs independently on port 8080 (configurable via `NEXT_PUBLIC_WS_URL`)
 - **One-way Communication**: Companion clients send images, note clients receive and display them
 - **Room-based Isolation**: Each note has its own Socket.IO room based on the `display_id`
+
+#### One-way Communication
+
+While WebSockets are inherently bidirectional communication channels, our architecture implements them as unidirectional streams, allowing images to flow exclusively from companion clients to note clients.
+
+```
+┌─────────────────┐          ┌──────────────┐          ┌─────────────────┐
+│  Companion      │          │  WebSocket   │          │  Note Client    │
+│  Client         │ ────────▶│  Server      │ ────────▶│                 │
+│  (Mobile/Phone) │  Images  │              │  Images  │  (Desktop/Web)  │
+└─────────────────┘          └──────────────┘          └─────────────────┘
+                                     │
+                             Socket.io Rooms
+                             (grouped by note_id)
+```
+
+This design choice simplifies the system architecture by establishing a clear data flow pattern where companion devices serve as image sources and note clients act as display endpoints.
 
 #### Room-based Communication
 
