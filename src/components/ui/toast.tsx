@@ -38,14 +38,14 @@ function Toast(props: ToastProps) {
      style={{
       fontFamily: 'DM Sans, sans-serif',
      }}>
-      <div className="flex flex-1 items-center">
-        <div className="w-full space-y-1">
-          <div className="flex items-center space-x-2">
+      <div className="flex flex-1 items-center space-y-1">
+        <div className="w-full">
+          <div className="flex items-center space-x-1">
             {icon}
-            <p className="text-foreground"> {title} </p>
+            <p className="text-foreground font-semibold"> {title} </p>
           </div>
 
-          <p className="mt-1 text-foreground opacity-60"> {description} </p>
+          <p className="text-foreground opacity-60"> {description} </p>
         </div>
       </div>
     </div>
