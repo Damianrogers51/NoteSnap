@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import CompanionForm from "./CompanionForm";
 import CompanionNotePreview from "./CompanionNotePreview";
+import Link from "next/link";
 
 export default async function CompanionPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -22,9 +23,12 @@ export default async function CompanionPage({ params }: { params: Promise<{ id: 
                 {partialNote.display_id}
             </div>
 
-            <div className="flex flex-col items-centertext-center">
+            <div className="flex flex-col items-center text-center">
               <div className="text-3xl font-bold"> Companion Link </div>
-              <div className="opacity-60"> Use this link to attach images directly to your note </div>
+              <div className="text-foreground/60"> 
+                <span> Use this link to attach images directly to </span>
+                <Link href={`/note/${partialNote.id}`} className="underline font-semibold hover:text-foreground"> {partialNote.title} </Link>
+              </div>
             </div>
           </div>
 
