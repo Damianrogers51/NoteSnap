@@ -5,7 +5,7 @@ import { useCompanion } from "@/app/hooks/useCompanion";
 import { DynamicEditor } from "./Editor/DynamicEditor";
 import CompanionCode from "./CompanionCode";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, Loader2 } from "lucide-react";
+import { ChevronLeft, Loader2, Share, QrCode } from "lucide-react";
 import TitleEditor from "./Editor/TitleEditor";
 
 export interface Note {
@@ -29,17 +29,17 @@ export default function Note({ note }: { note: Note }) {
 
   return (
     <div className="relative flex justify-center w-screen h-full pb-8">
-      <div className="fixed top-0 left-0 right-0 bg-background sm:bg-transparent sm:px-4 sm:py-4 px-2 py-2 flex sm:border-none border-b-[.5px] border-neutral-100 z-10">
-        <div className="flex items-center space-x-2 backdrop-blur-sm">
-          <button onClick={handleBack} className="text-neutral-300 hover:text-foreground transition cursor-pointer">
-            <ChevronLeft className="w-4 h-4" />
+      <div className="fixed top-0 left-0 right-0 bg-background sm:bg-transparent p-4 flex sm:border-none border-b-[.5px] border-neutral-200 z-10">
+        <div className="flex items-center text-foreground/60 space-x-3">
+          <button onClick={handleBack} className="hover:text-foreground hover:bg-neutral-100 transition cursor-pointer border-[.5px] border-neutral-200 shadow-xs rounded-lg p-2">
+            <ChevronLeft className="size-4 stroke-[2.5px]" />
           </button>
           {(isTitleSavePending || isEditorSavePending) && (
-            <Loader2 className="size-3 animate-spin text-neutral-300" />
+            <Loader2 className="size-4 animate-spin stroke-[2px]" />
           )}
         </div>
 
-        <div className="flex items-center text-neutral-300 ml-auto">
+        <div className="ml-auto">
           <CompanionCode displayId={note.display_id} />
         </div>
       </div>

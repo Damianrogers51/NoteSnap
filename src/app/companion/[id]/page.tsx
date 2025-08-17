@@ -19,15 +19,15 @@ export default async function CompanionPage({ params }: { params: Promise<{ id: 
       <div className="flex flex-col items-center justify-center h-full grow">
         <div className="flex flex-col items-center space-y-8 w-full max-w-80">
           <div className="flex flex-col items-center space-y-2">
-            <div className="bg-neutral-300 text-neutral-500 font-semibold rounded-lg px-2 py-1">
+            <div className="bg-neutral-300 text-neutral-500 font-bold rounded-lg px-2 py-1">
                 {partialNote.display_id}
             </div>
 
-            <div className="flex flex-col items-center text-center">
+            <div className="flex flex-col items-center text-center space-y-1">
               <div className="text-3xl font-bold"> Companion Link </div>
-              <div className="text-foreground/60"> 
-                <span> Use this link to attach images directly to </span>
-                <Link href={`/note/${partialNote.id}`} className="underline font-semibold hover:text-foreground"> {partialNote.title} </Link>
+              <div className="text-foreground/60 text-[12px] leading-tight"> 
+                <span> Use this link to attach images directly to <br></br> </span>
+                <Link href={`/note/${partialNote.id}`} className="underline font-semibold hover:text-foreground transition"> {partialNote.title} </Link>
               </div>
             </div>
           </div>
