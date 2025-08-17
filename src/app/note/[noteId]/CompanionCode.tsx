@@ -61,7 +61,7 @@ export default function CompanionCode({ displayId }: { displayId: string }) {
             </div>
 
             <div className="w-full h-px bg-neutral-200 flex items-center justify-center">
-              <div className="bg-background text-[11px] text-neutral-300 px-1 font-medium"> OR </div>
+              <div className="bg-background text-[11px] text-neutral-400/80 px-1 font-medium"> OR </div>
             </div>
 
             <Link href={`/companion/${displayId}`} target="_blank" className="w-full text-center bg-foreground text-background font-semibold px-4 py-2 rounded-lg hover:opacity-[.97] transition">

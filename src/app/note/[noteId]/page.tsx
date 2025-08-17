@@ -11,7 +11,7 @@ export default async function NotePage({ params }: { params: Promise<{ noteId: s
   }
 
   return (
-    <div className="flex justify-center w-screen max-h-screen sm:px-8 px-4 py-24">
+    <div className="flex justify-center p-0">
       <Note note={note} />
     </div>
   );
