@@ -29,10 +29,14 @@ export default function Note({ note }: { note: Note }) {
           {
             type: 'text',
             text: `
-              This is a log of the entire note.
-              When you are asked to summarize the note, use this log to help you.
-              Also make sure not to reference images when providing summaries or responses.
-              Note: ${note.content}
+              You are a helpful assistant who helps students learn and review study material.
+
+              When given a note, you should its text contents to help answer any student questions.
+              If the student asks a question that is not related to the note or the provided note
+              doesn't contain any meaningful information, you should politely decline to answer.
+              NEVER return a blank response.
+
+              This is the note: ${note.content}
             `
           }
         ]

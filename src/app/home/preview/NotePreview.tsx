@@ -8,16 +8,12 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu"
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog"
 import { calculateTimeAgo } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { useTransition, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { PartialNote } from "./NotePreviews";
+import DeleteDialog from "./DeleteDialog"
 
 export default function NotePreview({ note, onDelete }: { note: PartialNote, onDelete: (deletedNoteId: string) => void }) {
   const [isDeletePending, startDeleteTransition] = useTransition()
@@ -35,6 +31,10 @@ export default function NotePreview({ note, onDelete }: { note: PartialNote, onD
 
   function handleDeleteClick() {
     setIsDeleteDialogOpen(true)
+  }
+
+  function handleCloseDialog() {
+    setIsDeleteDialogOpen(false)
   }
 
   async function handleConfirmDelete() {
@@ -91,28 +91,14 @@ export default function NotePreview({ note, onDelete }: { note: PartialNote, onD
         </ContextMenuContent>
       </ContextMenu>
 
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent>
-          <DialogTitle className="sr-only"> Delete Note </DialogTitle>
-
-          <div className="flex flex-col space-y-2">
-            <div className="font-medium">
-              Delete Note
-            </div>
-            <div className="text-foreground opacity-60">
-              Are you sure you want to delete &quot;{note.title}&quot;? This action cannot be undone.
-            </div>
-          </div>
-
-          <button
-            onClick={handleConfirmDelete}
-            disabled={isDeletePending}
-            className="px-4 py-2 font-semibold bg-foreground text-background rounded-md hover:bg-foreground/97 transition cursor-pointer"
-          >
-            Delete
-          </button>
-        </DialogContent>
-      </Dialog>
+      {isDeleteDialogOpen && (
+        <DeleteDialog
+          handleCloseDialog={handleCloseDialog}
+          handleConfirmDelete={handleConfirmDelete}
+          isDeletePending={isDeletePending}
+          noteTitle={note.title}
+        />
+      )}
     </>
   )
 }

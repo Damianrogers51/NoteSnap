@@ -10,5 +10,7 @@ export async function POST(request: Request) {
     messages: convertToModelMessages(messages),
   });
 
+  console.log(result.toUIMessageStreamResponse());
+
   return result.toUIMessageStreamResponse();
 }
