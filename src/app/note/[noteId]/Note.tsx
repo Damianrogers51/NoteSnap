@@ -1,12 +1,14 @@
 'use client';
 
-import { useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useCompanion } from "@/app/hooks/useCompanion";
 import { DynamicEditor } from "./Editor/DynamicEditor";
 import CompanionCode from "./CompanionCode";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, Loader2, Share, QrCode } from "lucide-react";
+import { ChevronLeft, Loader2, PanelRight } from "lucide-react";
 import TitleEditor from "./Editor/TitleEditor";
+import Chat from "./Chat/Chat";
+import { UIMessage, useChat } from "@ai-sdk/react";
 
 export interface Note {
   id: string
@@ -17,9 +19,32 @@ export interface Note {
 }
 
 export default function Note({ note }: { note: Note }) {
+  const [isChatOpen, setIsChatOpen] = useState(false)
+  const initialMessages = useMemo(() => {
+    return [
+      {
+        id: '1',
+        role: 'system',
+        parts: [
+          {
+            type: 'text',
+            text: `
+              This is a log of the entire note.
+              When you are asked to summarize the note, use this log to help you.
+              Also make sure not to reference images when providing summaries or responses.
+              Note: ${note.content}
+            `
+          }
+        ]
+      }
+    ] as UIMessage[]
+  }, [note.content])
+  const { messages, sendMessage, setMessages, status } = useChat({
+    messages: initialMessages
+  })
+
   const [isTitleSavePending, startTitleSaveTransition] = useTransition()
   const [isEditorSavePending, startEditorSaveTransition] = useTransition()
-
   const [image] = useCompanion(note.id);
   const router = useRouter();
 
@@ -27,12 +52,21 @@ export default function Note({ note }: { note: Note }) {
     router.push('/')
   }
 
+  function handleChatToggle() {
+    setIsChatOpen((prev) => !prev)
+  }
+
+  function handleNewChat() {
+    setMessages(initialMessages)
+  }
+
   return (
-    <div className="w-full relative sm:space-y-4 space-y-8">
-      <div className="sticky top-0 left-0 right-0 bg-background sm:bg-transparent p-4 sm:border-none border-b-[.5px] border-neutral-200 z-10">
-        <div className="flex">
-            <div className="flex items-center text-foreground/60 space-x-3">
-              <button onClick={handleBack} className="hover:text-foreground hover:bg-neutral-100 transition cursor-pointer border-[.5px] border-neutral-200 shadow-xs rounded-lg p-2">
+    <div className="w-full">
+      <div className={`w-full relative sm:space-y-4 space-y-8 transition-all ${isChatOpen ? 'md:pr-72 pr-0' : ''}`}>
+        <div className="sticky top-0 left-0 right-0 bg-background sm:bg-transparent p-4 sm:border-none border-b-[.5px] border-neutral-200 z-[10]">
+          <div className="flex">
+            <div className="flex items-center text-[#8c8c8c] space-x-3">
+              <button onClick={handleBack} className="bg-background hover:text-foreground hover:bg-neutral-100 transition cursor-pointer border-[.5px] border-neutral-200 shadow-xs rounded-lg p-2">
                 <ChevronLeft className="size-4 stroke-[2.5px]" />
               </button>
               {(isTitleSavePending || isEditorSavePending) && (
@@ -40,24 +74,37 @@ export default function Note({ note }: { note: Note }) {
               )}
             </div>
 
-            <div className="ml-auto">
+            <div className="flex text-[#8c8c8c] ml-auto space-x-2">
               <CompanionCode displayId={note.display_id} />
+              <button onClick={handleChatToggle} className="bg-background hover:text-foreground hover:bg-neutral-100 transition cursor-pointer border-[.5px] border-neutral-200 shadow-xs rounded-lg px-3 py-2">
+                <PanelRight className="size-4 stroke-[2.5px] cursor-pointer" />
+              </button>
             </div>
           </div>
         </div>
-      <div>
-    </div>
 
-      <div className="relative flex justify-center w-full h-full pb-8 px-4">
-        <div className="flex flex-col w-full max-w-5xl space-y-8">
-          <TitleEditor note={note} startTitleSaveTransition={startTitleSaveTransition} />
-          <DynamicEditor 
-            note={note}
-            image={image}
-            startEditorSaveTransition={startEditorSaveTransition}
-          />
+        <div className="relative flex justify-center w-full h-full pb-8 px-4">
+          <div className="flex flex-col w-full max-w-5xl space-y-8">
+            <TitleEditor note={note} startTitleSaveTransition={startTitleSaveTransition} />
+            <DynamicEditor 
+              note={note}
+              image={image}
+              setMessages={setMessages}
+              startEditorSaveTransition={startEditorSaveTransition}
+            />
+          </div>
         </div>
       </div>
+
+      {isChatOpen && (
+        <Chat 
+          messages={messages} 
+          sendMessage={sendMessage} 
+          status={status} 
+          setIsChatOpen={setIsChatOpen} 
+          handleNewChat={handleNewChat}
+        />
+      )}
     </div>
   );
 }

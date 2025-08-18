@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useTransition } from "react"
+import { useEffect, useState } from "react"
 import NotePreview from "./NotePreview"
 import NewNote from "./NewNote"
 import { Note } from "@/app/note/[noteId]/Note"

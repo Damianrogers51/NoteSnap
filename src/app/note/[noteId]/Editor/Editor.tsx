@@ -5,6 +5,7 @@ import { Note } from "../Note";
 import { Check } from "lucide-react";
 import { BlockNoteView } from "@blocknote/mantine";
 import { Block, BlockNoteEditor, PartialBlock } from "@blocknote/core";
+import { UIMessage } from "@ai-sdk/react";
 import { toast } from "@/components/ui/toast"
 
 import "@blocknote/core/fonts/inter.css";
@@ -15,10 +16,11 @@ import "./styles.css"
 export interface EditorProps {
   note: Note
   startEditorSaveTransition: TransitionStartFunction
+  setMessages: (messages: UIMessage[] | ((messages: UIMessage[]) => UIMessage[])) => void
   image?: ArrayBuffer;
 }
 
-export default function Editor({ note, startEditorSaveTransition, image }: EditorProps) {
+export default function Editor({ note, startEditorSaveTransition, setMessages, image }: EditorProps) {
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   
   const editor = useMemo(() => {
@@ -86,12 +88,26 @@ export default function Editor({ note, startEditorSaveTransition, image }: Edito
           if (!response.ok) {
             throw new Error('Failed to save document')
           }
+          setMessages((prev: UIMessage[]) => {
+            const newMessages = [...prev]
+            newMessages[0] = {
+              id: '1',
+              role: 'system',
+              parts: [
+                {
+                  type: 'text',
+                  text: `This is a log of the entire note: ${JSON.stringify(blocks)}`
+                }
+              ]
+            }
+            return newMessages
+          })
         } catch (err) {
           console.error('Failed to save document:', err)
         }
       })
     }, 1000);
-  }, [note.id, startEditorSaveTransition]);
+  }, [note.id, startEditorSaveTransition, setMessages]);
 
   return (
     <BlockNoteView 

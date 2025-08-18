@@ -33,7 +33,7 @@ export default function CompanionCode({ displayId }: { displayId: string }) {
   return (
     <Dialog>
       <DialogTrigger className="outline-none">
-        <div className="flex items-center text-foreground/60 px-3 py-1 space-x-1 border-[.5px] border-neutral-200 shadow-xs backdrop-blur-sm hover:bg-neutral-100 hover:text-foreground transition-all rounded-lg cursor-pointer">
+        <div className="flex items-center bg-background text-foreground/60 px-3 py-1 space-x-1 border-[.5px] border-neutral-200 shadow-xs backdrop-blur-sm hover:bg-neutral-100 hover:text-foreground transition-all rounded-lg cursor-pointer">
           <QrCode className="w-4 h-4 stroke-[2.5px]" />
           <div className="text-lg font-semibold">
             {displayId}
