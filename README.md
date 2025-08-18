@@ -9,6 +9,7 @@ A modern note-taking application built with Next.js that allows you to create, e
 - **Database**: Supabase (PostgreSQL)
 - **Real-time**: Socket.IO for live image sharing
 - **Editor**: BlockNote for rich text editing
+- **AI Chat**: Vercel AI SDK/ OpenAI
 
 
 ## Getting Started
@@ -38,6 +39,7 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 NEXT_PUBLIC_WS_URL=https://notesnap-server-production.up.railway.app
 NEXT_PUBLIC_SUPABASE_URL=https://fhggqijhweqfgzayfbdl.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZoZ2dxaWpod2VxZmd6YXlmYmRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ4NzIyNTcsImV4cCI6MjA3MDQ0ODI1N30.arMG9RUGTNQ97fgOTMibDwyxftcomySuASRW9NsrGYY
+OPENAI_API_KEY=[YOUR_KEY]
 ```
 
 4. Run the development server:
