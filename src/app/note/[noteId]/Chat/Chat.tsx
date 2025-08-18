@@ -40,9 +40,9 @@ export default function Chat({ messages, sendMessage, status, setIsChatOpen, han
         onWheelCapture={(e) => e.stopPropagation()}
       >
         {!isInitial && (
-          <div className="sticky top-0 left-0 right-0 flex items-center justify-between text-[#8c8c8c] border-b-[.5px] border-neutral-200 pb-4">
+          <div className="sticky top-0 left-0 right-0 flex items-center justify-between border-b-[.5px] border-neutral-200 pb-4">
             <div className="font-medium"> Chat </div>
-            <button onClick={handleNewChat} className="flex items-center justify-center size-6 text-[#8c8c8c] cursor-pointer border-[.5px] border-neutral-300 rounded-md transition-all hover:bg-neutral-200">
+            <button onClick={handleNewChat} className="flex items-center justify-center size-6 text-[#8c8c8c] cursor-pointer border-[.5px] border-neutral-300 rounded-md transition-all hover:bg-neutral-200 hover:text-foreground">
               <Plus className="size-2.5 stroke-[2.5px]" />
             </button>
           </div>

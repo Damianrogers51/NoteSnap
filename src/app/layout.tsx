@@ -12,6 +12,12 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: "NoteSnap",
   description: "NoteSnap is a note-taking app that allows you to create, edit, and collaborate on notes with real-time image attachments via companion links.",
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
 };
 
 export default function RootLayout({

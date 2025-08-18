@@ -34,7 +34,7 @@ function Toast(props: ToastProps) {
   const { title, description, icon } = props;
  
   return (
-    <div className="flex bg-background max-w-sm text-foreground px-4 py-3 border-[.5px] tracking-[-.05em] text-[11px] border-neutral-300 border-b-neutral-400/80 rounded-lg shadow-xs"
+    <div className="flex bg-background max-w-sm text-xs text-foreground px-4 py-3 border-[.5px] border-neutral-200 border-b-neutral-400/80 rounded-lg shadow-xs"
      style={{
       fontFamily: 'DM Sans, sans-serif',
      }}>
