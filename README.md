@@ -66,7 +66,8 @@ notesnap/
 ├── src/
 │   ├── app/                   # Next.js App Router
 │   │   ├── api/               # API routes
-│   │   │   └── notes/         # Note CRUD operations
+│   │   │   ├── notes/         # Note CRUD operations
+│   │   │   └── chat/          # AI chat functionality 
 │   │   ├── companion/         # Companion link pages
 │   │   ├── home/              # Home page components
 │   │   ├── note/              # Note editing pages
@@ -110,6 +111,7 @@ This application leverages Next.js API route handlers to manage all backend oper
 - `GET /api/notes/[noteId]` - Fetch a specific note
 - `POST /api/notes/[noteId]` - Update a note
 - `DELETE /api/notes/[noteId]` - Delete a note
+- `GET /api/chat` - Send messages and await response from ChatGPT 4o
 
 ### WebSocket Server
 As mentioned earlier, NoteSnap employs a dedicated Node.js WebSocket server for real-time communication.
