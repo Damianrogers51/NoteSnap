@@ -15,7 +15,12 @@ import { Loader2 } from "lucide-react";
 import { PartialNote } from "./NotePreviews";
 import DeleteDialog from "./DeleteDialog"
 
-export default function NotePreview({ note, onDelete }: { note: PartialNote, onDelete: (deletedNoteId: string) => void }) {
+interface NotePreviewProps {
+  note: PartialNote
+  onDelete: (deletedNoteId: string) => void
+}
+
+export default function NotePreview({ note, onDelete }: NotePreviewProps) {
   const [isDeletePending, startDeleteTransition] = useTransition()
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
