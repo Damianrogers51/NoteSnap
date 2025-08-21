@@ -14,14 +14,14 @@ export function generateDisplayId(): string {
   return result
 }
 
-export const extractTextFromBlocks = (content: any): string => {
+export const extractTextFromBlocks = (content: unknown): string => {
   if (!content) return '';
   
-  let blocks;
+  let blocks: unknown;
   if (typeof content === 'string') {
     try {
       blocks = JSON.parse(content);
-    } catch (e) {
+    } catch {
       return content;
     }
   } else {
@@ -31,11 +31,16 @@ export const extractTextFromBlocks = (content: any): string => {
     return '';
   }
   
+  interface Block {
+    type: string;
+    content?: {text: string}[];
+  }
+  
   const textBlocks = blocks
-    .filter((block: any) => block.type !== 'image')
-    .map((block: any) => {
+    .filter((block: Block) => block.type !== 'image')
+    .map((block: Block) => {
       if (block.type === 'paragraph' || block.type === 'heading') {
-        return block.content?.map((item: any) => item.text).join('') || '';
+        return block.content?.map(item => item.text).join('') || '';
       }
       return '';
     })
