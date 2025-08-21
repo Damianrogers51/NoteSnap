@@ -5,10 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-/**
- * Generate a random 5-character alphanumeric string
- * @returns A 5-character string containing letters and numbers
- */
 export function generateDisplayId(): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   let result = ''
@@ -17,6 +13,36 @@ export function generateDisplayId(): string {
   }
   return result
 }
+
+export const extractTextFromBlocks = (content: any): string => {
+  if (!content) return '';
+  
+  let blocks;
+  if (typeof content === 'string') {
+    try {
+      blocks = JSON.parse(content);
+    } catch (e) {
+      return content;
+    }
+  } else {
+    blocks = content;
+  }
+  if (!Array.isArray(blocks)) {
+    return '';
+  }
+  
+  const textBlocks = blocks
+    .filter((block: any) => block.type !== 'image')
+    .map((block: any) => {
+      if (block.type === 'paragraph' || block.type === 'heading') {
+        return block.content?.map((item: any) => item.text).join('') || '';
+      }
+      return '';
+    })
+    .filter((text: string) => text.trim().length > 0);
+  
+  return textBlocks.join('\n');
+};
 
 export function calculateTimeAgo(updatedAt: string) {
   const now = new Date();

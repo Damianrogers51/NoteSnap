@@ -5,8 +5,8 @@ import { Note } from "../Note";
 import { Check } from "lucide-react";
 import { BlockNoteView } from "@blocknote/mantine";
 import { Block, BlockNoteEditor, PartialBlock } from "@blocknote/core";
-import { UIMessage } from "@ai-sdk/react";
 import { toast } from "@/components/ui/toast"
+import { extractTextFromBlocks } from "@/lib/utils";
 
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css"
@@ -16,11 +16,11 @@ import "./styles.css"
 export interface EditorProps {
   note: Note
   startEditorSaveTransition: TransitionStartFunction
-  setMessages: (messages: UIMessage[] | ((messages: UIMessage[]) => UIMessage[])) => void
+  setSystem: (system: string) => void
   image?: ArrayBuffer;
 }
 
-export default function Editor({ note, startEditorSaveTransition, setMessages, image }: EditorProps) {
+export default function Editor({ note, startEditorSaveTransition, setSystem, image }: EditorProps) {
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   
   const editor = useMemo(() => {
@@ -88,26 +88,13 @@ export default function Editor({ note, startEditorSaveTransition, setMessages, i
           if (!response.ok) {
             throw new Error('Failed to save document')
           }
-          setMessages((prev: UIMessage[]) => {
-            const newMessages = [...prev]
-            newMessages[0] = {
-              id: '1',
-              role: 'system',
-              parts: [
-                {
-                  type: 'text',
-                  text: `This is a log of the entire note: ${JSON.stringify(blocks)}`
-                }
-              ]
-            }
-            return newMessages
-          })
+          setSystem(`This is a log of the entire note: ${extractTextFromBlocks(JSON.stringify(blocks))}`)
         } catch (err) {
           console.error('Failed to save document:', err)
         }
       })
     }, 1000);
-  }, [note.id, startEditorSaveTransition, setMessages]);
+  }, [note.id, startEditorSaveTransition, setSystem]);
 
   return (
     <BlockNoteView 

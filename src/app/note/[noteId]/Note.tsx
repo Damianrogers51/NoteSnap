@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useCompanion } from "@/app/hooks/useCompanion";
 import { DynamicEditor } from "./Editor/DynamicEditor";
 import CompanionCode from "./CompanionCode";
@@ -8,7 +8,9 @@ import { useRouter } from "next/navigation";
 import { ChevronLeft, Loader2, PanelRight } from "lucide-react";
 import TitleEditor from "./Editor/TitleEditor";
 import Chat from "./Chat/Chat";
-import { UIMessage, useChat } from "@ai-sdk/react";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
+import { extractTextFromBlocks } from "@/lib/utils";
 
 export interface Note {
   id: string
@@ -20,31 +22,18 @@ export interface Note {
 
 export default function Note({ note }: { note: Note }) {
   const [isChatOpen, setIsChatOpen] = useState(false)
-  const initialMessages = useMemo(() => {
-    return [
-      {
-        id: '1',
-        role: 'system',
-        parts: [
-          {
-            type: 'text',
-            text: `
-              You are a helpful assistant who helps students learn and review study material.
-
-              When given a note, you should its text contents to help answer any student questions.
-              If the student asks a question that is not related to the note or the provided note
-              doesn't contain any meaningful information, you should politely decline to answer.
-              NEVER return a blank response.
-
-              This is the note: ${note.content}
-            `
-          }
-        ]
-      }
-    ] as UIMessage[]
-  }, [note.content])
+  const [system, setSystem] = useState(`This is the note: ${extractTextFromBlocks(note.content)}`)
   const { messages, sendMessage, setMessages, status } = useChat({
-    messages: initialMessages
+    transport: new DefaultChatTransport({
+      prepareSendMessagesRequest: ({ id, messages }) => {
+      return {
+        body: {
+          id,
+          system,
+          messages
+        },
+      };
+    }}),
   })
 
   const [isTitleSavePending, startTitleSaveTransition] = useTransition()
@@ -61,7 +50,7 @@ export default function Note({ note }: { note: Note }) {
   }
 
   function handleNewChat() {
-    setMessages(initialMessages)
+    setMessages([])
   }
 
   return (
@@ -93,7 +82,7 @@ export default function Note({ note }: { note: Note }) {
             <DynamicEditor 
               note={note}
               image={image}
-              setMessages={setMessages}
+              setSystem={setSystem}
               startEditorSaveTransition={startEditorSaveTransition}
             />
           </div>
